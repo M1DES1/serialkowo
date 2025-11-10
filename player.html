@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serialkowo - Odtwarzacz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="player-page">
+        <div class="video-container">
+            <!-- Nagłówek odtwarzacza -->
+            <div class="player-header">
+                <a href="hazbin-hotel.html" class="back-btn">← Powrót do odcinków</a>
+                <span class="player-title" id="player-title">Hazbin Hotel - Pilot</span>
+                <a href="index.html" class="home-btn">Strona Główna</a>
+            </div>
+            
+            <!-- Główne wideo -->
+            <div class="video-wrapper">
+                <video id="video-player" controls controlsList="nodownload noremoteplayback">
+                    Twoja przeglądarka nie obsługuje odtwarzacza wideo.
+                </video>
+                <div class="loading-spinner" id="loading-spinner">Ładowanie wideo...</div>
+            </div>
+            
+            <!-- Uproszczona nakładka -->
+            <div id="player-overlay" class="player-overlay">
+                <div class="overlay-content">
+                    <div class="episode-selector">
+                        <h3>Wybierz odcinek</h3>
+                        <div class="episode-list">
+                            <div class="episode-item active" data-episode="1" onclick="changeEpisode(1)">
+                                <span class="episode-num">01</span>
+                                <span class="episode-title">Pilot</span>
+                                <span class="episode-duration">32 min</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="player-controls-simple">
+                        <div class="control-row">
+                            <button class="control-btn" onclick="changePlaybackRate(0.75)">
+                                <span class="icon">🐢</span>
+                                <span>Wolniej</span>
+                            </button>
+                            <button class="control-btn" onclick="changePlaybackRate(1)">
+                                <span class="icon">⏱️</span>
+                                <span>Normalna</span>
+                            </button>
+                            <button class="control-btn" onclick="changePlaybackRate(1.25)">
+                                <span class="icon">🐇</span>
+                                <span>Szybciej</span>
+                            </button>
+                            <button class="control-btn" onclick="changePlaybackRate(1.5)">
+                                <span class="icon">⚡</span>
+                                <span>Turbo</span>
+                            </button>
+                        </div>
+                        
+                        <div class="control-row">
+                            <button class="control-btn" onclick="skipTime(-10)">
+                                <span class="icon">⏪</span>
+                                <span>-10s</span>
+                            </button>
+                            <button class="control-btn" onclick="skipTime(10)">
+                                <span class="icon">⏩</span>
+                                <span>+10s</span>
+                            </button>
+                            <button class="control-btn" onclick="toggleFullscreen()">
+                                <span class="icon">📺</span>
+                                <span>Pełny ekran</span>
+                            </button>
+                            <button class="control-btn" onclick="toggleMute()">
+                                <span class="icon">🔊</span>
+                                <span>Dźwięk</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="navigation-buttons">
+                        <button class="nav-btn" id="prev-episode" onclick="navigateEpisode(-1)" disabled>← Poprzedni</button>
+                        <button class="nav-btn" id="next-episode" onclick="navigateEpisode(1)" disabled>Następny →</button>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="toggle-overlay" class="toggle-overlay-btn" onclick="toggleOverlay()">⚙️</button>
+        </div>
+    </div>
+
+    <script src="player.js"></script>
+</body>
+</html>

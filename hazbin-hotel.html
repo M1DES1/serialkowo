@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serialkowo - Hazbin Hotel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="episodes-page">
+        <header class="page-header">
+            <a href="index.html" class="back-btn">← Strona Główna</a>
+            <h1>Hazbin Hotel - Odcinki</h1>
+        </header>
+        
+        <div class="series-info">
+            <img src="https://files.catbox.moe/moba5a.png" alt="Hazbin Hotel" class="series-poster">
+            <div class="series-details">
+                <h2>Hazbin Hotel</h2>
+                <p class="series-description">
+                    Serial animowany opowiadający o księżnicce piekła, Charlie, 
+                    która próbuje zrehabilitować grzeszników w swoim hotelu.
+                </p>
+            </div>
+        </div>
+        
+        <div class="episodes-container">
+            <h3>Odcinki:</h3>
+            <div class="episode-card" onclick="playEpisode(1)">
+                <div class="episode-number">01</div>
+                <div class="episode-info">
+                    <h3>Pilot</h3>
+                    <p>Odcinek pilotażowy • 32 min</p>
+                </div>
+            </div>
+            <!-- Możesz dodać więcej odcinków -->
+        </div>
+    </div>
+
+    <script>
+        function playEpisode(episodeNumber) {
+            // Przekierowanie do odtwarzacza z numerem odcinka
+            window.location.href = `player.html?episode=${episodeNumber}`;
+        }
+    </script>
+</body>
+</html>

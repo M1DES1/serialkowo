@@ -149,6 +149,27 @@ function initVolumeControl() {
     updateVolumeIcon();
 }
 
+
+
+function showLoading() {
+    loadingSpinner.classList.add('show');
+    // UKRYJ przycisk play/pause na środku podczas ładowania
+    document.querySelector('.center-controls').style.display = 'none';
+}
+
+function hideLoading() {
+    loadingSpinner.classList.remove('show');
+    // POKAŻ przycisk play/pause na środku po zakończeniu ładowania
+    document.querySelector('.center-controls').style.display = 'flex';
+}
+
+
+
+
+
+
+
+
 // Aktualizacja ikony głośności
 function updateVolumeIcon() {
     const volume = videoPlayer.volume;
@@ -492,3 +513,4 @@ function handleKeyboard(event) {
             break;
     }
 }
+

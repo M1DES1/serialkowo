@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initEventListeners();
     initVolumeControl();
     initEpisodesSidebar();
-    showControlsTemporarily();
+    // NIE pokazuj kontrolek na starcie - tylko ładowanie
 });
 
 function initEventListeners() {
@@ -149,27 +149,6 @@ function initVolumeControl() {
     updateVolumeIcon();
 }
 
-
-
-function showLoading() {
-    loadingSpinner.classList.add('show');
-    // UKRYJ przycisk play/pause na środku podczas ładowania
-    document.querySelector('.center-controls').style.display = 'none';
-}
-
-function hideLoading() {
-    loadingSpinner.classList.remove('show');
-    // POKAŻ przycisk play/pause na środku po zakończeniu ładowania
-    document.querySelector('.center-controls').style.display = 'flex';
-}
-
-
-
-
-
-
-
-
 // Aktualizacja ikony głośności
 function updateVolumeIcon() {
     const volume = videoPlayer.volume;
@@ -233,12 +212,17 @@ function loadEpisode(episodeNumber) {
         updateEpisodeInfo(episodeNumber);
         hideEndScreen();
         
+        // UKRYJ przycisk środkowy podczas ładowania
+        hideCenterButton();
+        
         videoPlayer.load();
         
         videoPlayer.addEventListener('canplay', function onCanPlay() {
             videoPlayer.removeEventListener('canplay', onCanPlay);
             console.log('Wideo gotowe do odtwarzania');
             hideLoading();
+            // POKAŻ przycisk środkowy po załadowaniu
+            showCenterButton();
         }, { once: true });
         
     } else {
@@ -246,7 +230,25 @@ function loadEpisode(episodeNumber) {
     }
 }
 
+// Funkcje do ukrywania/pokazywania przycisku środkowego
+function hideCenterButton() {
+    const centerControls = document.querySelector('.center-controls');
+    centerControls.style.opacity = '0';
+    centerControls.style.pointerEvents = 'none';
+}
+
+function showCenterButton() {
+    const centerControls = document.querySelector('.center-controls');
+    centerControls.style.opacity = '1';
+    centerControls.style.pointerEvents = 'auto';
+}
+
 function handleVideoClick(event) {
+    // Jeśli trwa ładowanie, nie reaguj na kliknięcia
+    if (loadingSpinner.classList.contains('show')) {
+        return;
+    }
+    
     const currentTime = new Date().getTime();
     const timeSinceLastClick = currentTime - lastClickTime;
     
@@ -276,6 +278,11 @@ function showDoubleClickPause() {
 
 // Controls functions
 function togglePlayPause() {
+    // Jeśli trwa ładowanie, nie pozwól na odtwarzanie
+    if (loadingSpinner.classList.contains('show')) {
+        return;
+    }
+    
     if (videoPlayer.paused) {
         videoPlayer.play().catch(error => {
             console.log('Błąd odtwarzania:', error);
@@ -287,17 +294,32 @@ function togglePlayPause() {
 }
 
 function skipTime(seconds) {
+    // Jeśli trwa ładowanie, nie pozwól na przewijanie
+    if (loadingSpinner.classList.contains('show')) {
+        return;
+    }
+    
     videoPlayer.currentTime += seconds;
     showControlsTemporarily();
 }
 
 function toggleMute() {
+    // Jeśli trwa ładowanie, nie pozwól na zmianę dźwięku
+    if (loadingSpinner.classList.contains('show')) {
+        return;
+    }
+    
     videoPlayer.muted = !videoPlayer.muted;
     updateVolumeIcon();
     showControlsTemporarily();
 }
 
 function changeVolume(value) {
+    // Jeśli trwa ładowanie, nie pozwól na zmianę głośności
+    if (loadingSpinner.classList.contains('show')) {
+        return;
+    }
+    
     videoPlayer.volume = parseFloat(value);
     videoPlayer.muted = (videoPlayer.volume === 0);
     updateVolumeIcon();
@@ -310,6 +332,11 @@ function updateVolumeUI() {
 }
 
 function toggleSpeed() {
+    // Jeśli trwa ładowanie, nie pozwól na zmianę prędkości
+    if (loadingSpinner.classList.contains('show')) {
+        return;
+    }
+    
     currentSpeedIndex = (currentSpeedIndex + 1) % playbackRates.length;
     const speed = playbackRates[currentSpeedIndex];
     videoPlayer.playbackRate = speed;
@@ -318,12 +345,22 @@ function toggleSpeed() {
 }
 
 function toggleEpisodesList() {
+    // Jeśli trwa ładowanie, nie pozwól na otwarcie sidebar
+    if (loadingSpinner.classList.contains('show')) {
+        return;
+    }
+    
     isSidebarOpen = !isSidebarOpen;
     episodesSidebar.classList.toggle('open', isSidebarOpen);
     showControlsTemporarily();
 }
 
 function toggleFullscreen() {
+    // Jeśli trwa ładowanie, nie pozwól na pełny ekran
+    if (loadingSpinner.classList.contains('show')) {
+        return;
+    }
+    
     if (!document.fullscreenElement) {
         videoPlayer.parentElement.requestFullscreen().catch(err => {
             console.log('Błąd pełnego ekranu:', err);
@@ -353,6 +390,11 @@ function updateBuffer() {
 }
 
 function handleProgressClick(event) {
+    // Jeśli trwa ładowanie, nie pozwól na kliknięcie w progress bar
+    if (loadingSpinner.classList.contains('show')) {
+        return;
+    }
+    
     const progressContainer = event.currentTarget;
     const rect = progressContainer.getBoundingClientRect();
     const percent = (event.clientX - rect.left) / rect.width;
@@ -388,8 +430,13 @@ function formatTime(seconds) {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
 
-// UI controls visibility - POPRAWIONE
+// UI controls visibility
 function showControlsTemporarily() {
+    // Jeśli trwa ładowanie, nie pokazuj kontrolek
+    if (loadingSpinner.classList.contains('show')) {
+        return;
+    }
+    
     controlsOverlay.classList.add('visible');
     clearTimeout(controlsTimeout);
     
@@ -431,10 +478,12 @@ function updateEpisodeInfo(episodeNumber) {
 // Loading functions
 function showLoading() {
     loadingSpinner.classList.add('show');
+    hideCenterButton(); // UKRYJ przycisk środkowy podczas ładowania
 }
 
 function hideLoading() {
     loadingSpinner.classList.remove('show');
+    showCenterButton(); // POKAŻ przycisk środkowy po zakończeniu ładowania
 }
 
 // End screen functions
@@ -469,6 +518,11 @@ function changeEpisode(episodeNumber) {
 
 // Keyboard controls
 function handleKeyboard(event) {
+    // Jeśli trwa ładowanie, zablokuj klawisze
+    if (loadingSpinner.classList.contains('show')) {
+        return;
+    }
+    
     if (event.target.tagName === 'INPUT') return;
     
     switch(event.key) {
@@ -513,4 +567,3 @@ function handleKeyboard(event) {
             break;
     }
 }
-

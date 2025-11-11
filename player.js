@@ -1,11 +1,10 @@
-// Dane serialu z POPRAWIONYM linkiem dla GitHub Pages
+// Dane serialu
 const hazbinHotelData = {
     episodes: [
         {
             number: 1,
             title: "Pilot",
             duration: "32:00",
-            // UŻYJ TEGO LINKU - to jest poprawny format dla GitHub
             videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/HAZBIN%20HOTEL%20(PILOT)%20%20Dubbing%20PL%20-%20BruDolina%20Studios%20(1080p,%20h264).mp4"
         }
     ]
@@ -35,6 +34,8 @@ let isSeeking = false;
 let isSidebarOpen = false;
 let lastClickTime = 0;
 let controlsTimeout;
+let isMouseMoving = false;
+let mouseMoveTimeout;
 const playbackRates = [0.75, 1, 1.25, 1.5, 2];
 let currentSpeedIndex = 1;
 
@@ -76,14 +77,24 @@ function initEventListeners() {
         console.error('Kod błędu:', videoPlayer.error);
         console.error('URL wideo:', videoPlayer.src);
         hideLoading();
-        
-        // Pokaż przycisk do ręcznego pobrania
         showManualDownloadOption();
     });
     
-    // Controls events
-    videoPlayer.addEventListener('mousemove', showControlsTemporarily);
-    controlsOverlay.addEventListener('mousemove', showControlsTemporarily);
+    // Mouse movement detection
+    document.addEventListener('mousemove', function() {
+        if (!isMouseMoving) {
+            isMouseMoving = true;
+            showControlsTemporarily();
+        }
+        
+        clearTimeout(mouseMoveTimeout);
+        mouseMoveTimeout = setTimeout(() => {
+            isMouseMoving = false;
+        }, 100);
+    });
+    
+    // Click events
+    videoPlayer.addEventListener('click', handleVideoClick);
     
     // Keyboard events
     document.addEventListener('keydown', handleKeyboard);
@@ -133,11 +144,8 @@ function showManualDownloadOption() {
 
 // Inicjalizacja kontroli głośności
 function initVolumeControl() {
-    // Ustaw początkową głośność
     videoPlayer.volume = 1;
     volumeSlider.value = 1;
-    
-    // Aktualizuj ikonę głośności
     updateVolumeIcon();
 }
 
@@ -148,12 +156,10 @@ function updateVolumeIcon() {
     
     volumeBtn.classList.toggle('muted', isMuted);
     
-    // Usuń wszystkie klasy ikon
     volumeBtn.querySelectorAll('.btn-icon').forEach(icon => {
         icon.style.display = 'none';
     });
     
-    // Pokaż odpowiednią ikonę
     if (isMuted || volume === 0) {
         volumeBtn.querySelector('.volume-mute').style.display = 'block';
     } else if (volume < 0.5) {
@@ -166,11 +172,8 @@ function updateVolumeIcon() {
 // Inicjalizacja sidebar z odcinkami
 function initEpisodesSidebar() {
     const sidebarContent = document.querySelector('.sidebar-content');
-    
-    // Wyczyść istniejącą zawartość
     sidebarContent.innerHTML = '';
     
-    // Dodaj odcinki do sidebar
     hazbinHotelData.episodes.forEach(episode => {
         const episodeItem = document.createElement('div');
         episodeItem.className = `episode-side-item ${episode.number === currentEpisode ? 'active' : ''}`;
@@ -202,19 +205,15 @@ function loadEpisode(episodeNumber) {
     if (episode) {
         showLoading();
         console.log('Ładowanie odcinka:', episodeNumber);
-        console.log('URL wideo:', episode.videoUrl);
         
-        // Ustaw źródło wideo
         videoPlayer.src = episode.videoUrl;
         currentEpisode = episodeNumber;
         
         updateEpisodeInfo(episodeNumber);
         hideEndScreen();
         
-        // Preload wideo
         videoPlayer.load();
         
-        // Spróbuj odtworzyć po załadowaniu
         videoPlayer.addEventListener('canplay', function onCanPlay() {
             videoPlayer.removeEventListener('canplay', onCanPlay);
             console.log('Wideo gotowe do odtwarzania');
@@ -235,7 +234,6 @@ function handleVideoClick(event) {
         togglePlayPause();
         showDoubleClickPause();
     } else {
-        // Single click - toggle play/pause
         togglePlayPause();
     }
     
@@ -369,22 +367,28 @@ function formatTime(seconds) {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
 
-// UI controls visibility
+// UI controls visibility - POPRAWIONE
 function showControlsTemporarily() {
     controlsOverlay.classList.add('visible');
     clearTimeout(controlsTimeout);
     
-    controlsTimeout = setTimeout(() => {
-        if (!videoPlayer.paused) {
-            controlsOverlay.classList.remove('visible');
-        }
-    }, 3000);
+    // Ukryj kontrolki po 2 sekundach jeśli wideo jest odtwarzane
+    if (!videoPlayer.paused) {
+        controlsTimeout = setTimeout(() => {
+            if (!isMouseMoving) {
+                controlsOverlay.classList.remove('visible');
+            }
+        }, 2000);
+    }
 }
 
 function updatePlayState() {
     const isPlaying = !videoPlayer.paused;
     document.querySelector('.video-container').classList.toggle('video-playing', isPlaying);
     document.querySelector('.play-btn').classList.toggle('video-playing', isPlaying);
+    
+    // Pokaż kontrolki przy zmianie stanu odtwarzania
+    showControlsTemporarily();
 }
 
 function updateEpisodeInfo(episodeNumber) {

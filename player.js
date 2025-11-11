@@ -1,12 +1,12 @@
-// Dane serialu z poprawionymi linkami dla GitHub Pages
+// Dane serialu z POPRAWIONYM linkiem dla GitHub Pages
 const hazbinHotelData = {
     episodes: [
         {
             number: 1,
             title: "Pilot",
             duration: "32:00",
-            // Użyj bezpośredniego linka do raw.githubusercontent.com
-            videoUrl: "https://raw.githubusercontent.com/M1DES1/serialkowo/main/seriale/hazbinhotel/HAZBIN%20HOTEL%20(PILOT)%20%20Dubbing%20PL%20-%20BruDolina%20Studios%20(1080p,%20h264).mp4"
+            // UŻYJ TEGO LINKU - to jest poprawny format dla GitHub
+            videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/HAZBIN%20HOTEL%20(PILOT)%20%20Dubbing%20PL%20-%20BruDolina%20Studios%20(1080p,%20h264).mp4"
         }
     ]
 };
@@ -76,7 +76,9 @@ function initEventListeners() {
         console.error('Kod błędu:', videoPlayer.error);
         console.error('URL wideo:', videoPlayer.src);
         hideLoading();
-        alert('Błąd ładowania wideo. Sprawdź konsolę dla szczegółów.');
+        
+        // Pokaż przycisk do ręcznego pobrania
+        showManualDownloadOption();
     });
     
     // Controls events
@@ -89,6 +91,44 @@ function initEventListeners() {
     // Progress bar events
     document.addEventListener('mousemove', handleProgressDrag);
     document.addEventListener('mouseup', stopSeeking);
+}
+
+// Pokazuj opcję ręcznego pobrania jeśli wideo nie działa
+function showManualDownloadOption() {
+    const errorMessage = document.createElement('div');
+    errorMessage.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0,0,0,0.9);
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        z-index: 100;
+        border: 2px solid #e50914;
+        max-width: 500px;
+        width: 90%;
+    `;
+    
+    errorMessage.innerHTML = `
+        <h3>Problem z odtwarzaniem wideo</h3>
+        <p>Wideo nie może być odtworzone bezpośrednio w przeglądarce.</p>
+        <p>Możesz:</p>
+        <div style="margin: 20px 0;">
+            <a href="${hazbinHotelData.episodes[0].videoUrl}" 
+               download 
+               style="background: #e50914; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block; margin: 10px;">
+               📥 Pobierz odcinek
+            </a>
+        </div>
+        <p style="font-size: 0.9rem; color: #ccc;">
+            Po pobraniu otwórz plik w odtwarzaczu wideo na swoim urządzeniu.
+        </p>
+    `;
+    
+    videoPlayer.parentElement.appendChild(errorMessage);
 }
 
 // Inicjalizacja kontroli głośności
@@ -178,7 +218,7 @@ function loadEpisode(episodeNumber) {
         videoPlayer.addEventListener('canplay', function onCanPlay() {
             videoPlayer.removeEventListener('canplay', onCanPlay);
             console.log('Wideo gotowe do odtwarzania');
-            // Nie autoplay - użytkownik musi kliknąć
+            hideLoading();
         }, { once: true });
         
     } else {
@@ -220,7 +260,6 @@ function togglePlayPause() {
     if (videoPlayer.paused) {
         videoPlayer.play().catch(error => {
             console.log('Błąd odtwarzania:', error);
-            alert('Nie można odtworzyć wideo. Sprawdź czy plik wideo istnieje.');
         });
     } else {
         videoPlayer.pause();

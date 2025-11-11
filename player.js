@@ -1,11 +1,91 @@
 // Dane serialu
 const hazbinHotelData = {
     episodes: [
+        // Sezon 1
         {
             number: 1,
-            title: "Pilot",
+            title: "Uwertura",
             duration: "32:00",
-            videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/HAZBIN%20HOTEL%20(PILOT)%20%20Dubbing%20PL%20-%20BruDolina%20Studios%20(1080p,%20h264).mp4"
+            season: 1,
+            videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc1%20Uwertura.mp4"
+        },
+        {
+            number: 2,
+            title: "Radio zabiło gwiazdę wideo",
+            duration: "28:00",
+            season: 1,
+            videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc%202%20Radio%20zabi%C5%82o%20gwiazd%C4%99%20wideo.mp4"
+        },
+        {
+            number: 3,
+            title: "Jajecznica",
+            duration: "26:00",
+            season: 1,
+            videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc%203Jajecznica.mp4"
+        },
+        {
+            number: 4,
+            title: "Maskarada",
+            duration: "29:00",
+            season: 1,
+            videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc%204Maskarada.mp4"
+        },
+        {
+            number: 5,
+            title: "Pojedynek o ojcostwo",
+            duration: "31:00",
+            season: 1,
+            videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc5%20Pojedynek%20o%20ojcostwo.m3u8"
+        },
+        {
+            number: 6,
+            title: "Witamy w niebie",
+            duration: "33:00",
+            season: 1,
+            videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc6%20Witamy%20w%20niebie.mp4"
+        },
+        {
+            number: 7,
+            title: "Hejka, Rosie!",
+            duration: "27:00",
+            season: 1,
+            videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc7%20Hejka,%20Rosie!.m3u8"
+        },
+        {
+            number: 8,
+            title: "Przedstawienie musi trwać",
+            duration: "35:00",
+            season: 1,
+            videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc%208%20Przedstawienie%20musi%20trwa%C4%87.m3u8"
+        },
+        // Sezon 2
+        {
+            number: 9,
+            title: "Nowy Pentious",
+            duration: "30:00",
+            season: 2,
+            videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc9%20Nowy%20Pentious.m3u8"
+        },
+        {
+            number: 10,
+            title: "Gawędziarz",
+            duration: "28:00",
+            season: 2,
+            videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc%2010%20Gaw%C4%99dziarz.m3u8"
+        },
+        {
+            number: 11,
+            title: "Hazbin Hotel za zamkniętymi drzwiami",
+            duration: "32:00",
+            season: 2,
+            videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc%2011%20Hazbin%20Hotel%20za%20zamkni%C4%99tymi%20drzwiami.m3u8"
+        },
+        {
+            number: 12,
+            title: "Umowa stoi",
+            duration: "34:00",
+            season: 2,
+            videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc%2012%20Umowa%20stoi.m3u8"
         }
     ]
 };
@@ -36,6 +116,8 @@ let lastClickTime = 0;
 let controlsTimeout;
 let isMouseMoving = false;
 let mouseMoveTimeout;
+let autoPlayCountdown = null;
+let countdownInterval = null;
 const playbackRates = [0.75, 1, 1.25, 1.5, 2];
 let currentSpeedIndex = 1;
 
@@ -52,7 +134,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initEventListeners();
     initVolumeControl();
     initEpisodesSidebar();
-    // NIE pokazuj kontrolek na starcie - tylko ładowanie
 });
 
 function initEventListeners() {
@@ -63,7 +144,7 @@ function initEventListeners() {
     videoPlayer.addEventListener('playing', hideLoading);
     videoPlayer.addEventListener('timeupdate', updateProgress);
     videoPlayer.addEventListener('progress', updateBuffer);
-    videoPlayer.addEventListener('ended', showEndScreen);
+    videoPlayer.addEventListener('ended', showAutoPlayCountdown);
     videoPlayer.addEventListener('volumechange', updateVolumeUI);
     videoPlayer.addEventListener('play', updatePlayState);
     videoPlayer.addEventListener('pause', updatePlayState);
@@ -100,11 +181,12 @@ function initEventListeners() {
     document.addEventListener('keydown', handleKeyboard);
     
     // Progress bar events
+    const progressContainer = document.querySelector('.progress-container');
+    progressContainer.addEventListener('mousedown', startSeeking);
     document.addEventListener('mousemove', handleProgressDrag);
     document.addEventListener('mouseup', stopSeeking);
 }
 
-// Pokazuj opcję ręcznego pobrania jeśli wideo nie działa
 function showManualDownloadOption() {
     const errorMessage = document.createElement('div');
     errorMessage.style.cssText = `
@@ -128,7 +210,7 @@ function showManualDownloadOption() {
         <p>Wideo nie może być odtworzone bezpośrednio w przeglądarce.</p>
         <p>Możesz:</p>
         <div style="margin: 20px 0;">
-            <a href="${hazbinHotelData.episodes[0].videoUrl}" 
+            <a href="${hazbinHotelData.episodes[currentEpisode - 1].videoUrl}" 
                download 
                style="background: #e50914; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block; margin: 10px;">
                📥 Pobierz odcinek
@@ -142,14 +224,12 @@ function showManualDownloadOption() {
     videoPlayer.parentElement.appendChild(errorMessage);
 }
 
-// Inicjalizacja kontroli głośności
 function initVolumeControl() {
     videoPlayer.volume = 1;
     volumeSlider.value = 1;
     updateVolumeIcon();
 }
 
-// Aktualizacja ikony głośności
 function updateVolumeIcon() {
     const volume = videoPlayer.volume;
     const isMuted = videoPlayer.muted || volume === 0;
@@ -169,22 +249,39 @@ function updateVolumeIcon() {
     }
 }
 
-// Inicjalizacja sidebar z odcinkami
 function initEpisodesSidebar() {
     const sidebarContent = document.querySelector('.sidebar-content');
     sidebarContent.innerHTML = '';
     
+    let currentSeason = 0;
+    
     hazbinHotelData.episodes.forEach(episode => {
+        if (episode.season !== currentSeason) {
+            currentSeason = episode.season;
+            const seasonHeader = document.createElement('div');
+            seasonHeader.className = 'season-header';
+            seasonHeader.innerHTML = `<h4>Sezon ${currentSeason}</h4>`;
+            seasonHeader.style.cssText = `
+                color: #e50914;
+                font-size: 1.1rem;
+                font-weight: bold;
+                margin: 20px 0 10px 0;
+                padding-bottom: 5px;
+                border-bottom: 1px solid #333;
+            `;
+            sidebarContent.appendChild(seasonHeader);
+        }
+        
         const episodeItem = document.createElement('div');
         episodeItem.className = `episode-side-item ${episode.number === currentEpisode ? 'active' : ''}`;
         episodeItem.setAttribute('data-episode', episode.number);
         
         episodeItem.innerHTML = `
             <div class="episode-side-content">
-                <span class="episode-side-num">${episode.number.toString().padStart(2, '0')}</span>
+                <span class="episode-side-num">${episode.number > 8 ? (episode.number - 8).toString().padStart(2, '0') : episode.number.toString().padStart(2, '0')}</span>
                 <div class="episode-side-info">
                     <span class="episode-side-title">${episode.title}</span>
-                    <span class="episode-side-duration">${episode.duration}</span>
+                    <span class="episode-side-duration">Sezon ${episode.season} • ${episode.duration}</span>
                 </div>
             </div>
             <div class="episode-play-icon">▶</div>
@@ -211,8 +308,8 @@ function loadEpisode(episodeNumber) {
         
         updateEpisodeInfo(episodeNumber);
         hideEndScreen();
+        cancelAutoPlay();
         
-        // UKRYJ przycisk środkowy podczas ładowania
         hideCenterButton();
         
         videoPlayer.load();
@@ -221,7 +318,6 @@ function loadEpisode(episodeNumber) {
             videoPlayer.removeEventListener('canplay', onCanPlay);
             console.log('Wideo gotowe do odtwarzania');
             hideLoading();
-            // POKAŻ przycisk środkowy po załadowaniu
             showCenterButton();
         }, { once: true });
         
@@ -230,7 +326,6 @@ function loadEpisode(episodeNumber) {
     }
 }
 
-// Funkcje do ukrywania/pokazywania przycisku środkowego
 function hideCenterButton() {
     const centerControls = document.querySelector('.center-controls');
     centerControls.style.opacity = '0';
@@ -244,7 +339,6 @@ function showCenterButton() {
 }
 
 function handleVideoClick(event) {
-    // Jeśli trwa ładowanie, nie reaguj na kliknięcia
     if (loadingSpinner.classList.contains('show')) {
         return;
     }
@@ -252,7 +346,7 @@ function handleVideoClick(event) {
     const currentTime = new Date().getTime();
     const timeSinceLastClick = currentTime - lastClickTime;
     
-    if (timeSinceLastClick < 300) { // Double click
+    if (timeSinceLastClick < 300) {
         event.preventDefault();
         togglePlayPause();
         showDoubleClickPause();
@@ -276,9 +370,7 @@ function showDoubleClickPause() {
     }, 1000);
 }
 
-// Controls functions
 function togglePlayPause() {
-    // Jeśli trwa ładowanie, nie pozwól na odtwarzanie
     if (loadingSpinner.classList.contains('show')) {
         return;
     }
@@ -294,7 +386,6 @@ function togglePlayPause() {
 }
 
 function skipTime(seconds) {
-    // Jeśli trwa ładowanie, nie pozwól na przewijanie
     if (loadingSpinner.classList.contains('show')) {
         return;
     }
@@ -304,7 +395,6 @@ function skipTime(seconds) {
 }
 
 function toggleMute() {
-    // Jeśli trwa ładowanie, nie pozwól na zmianę dźwięku
     if (loadingSpinner.classList.contains('show')) {
         return;
     }
@@ -315,7 +405,6 @@ function toggleMute() {
 }
 
 function changeVolume(value) {
-    // Jeśli trwa ładowanie, nie pozwól na zmianę głośności
     if (loadingSpinner.classList.contains('show')) {
         return;
     }
@@ -332,7 +421,6 @@ function updateVolumeUI() {
 }
 
 function toggleSpeed() {
-    // Jeśli trwa ładowanie, nie pozwól na zmianę prędkości
     if (loadingSpinner.classList.contains('show')) {
         return;
     }
@@ -345,7 +433,6 @@ function toggleSpeed() {
 }
 
 function toggleEpisodesList() {
-    // Jeśli trwa ładowanie, nie pozwól na otwarcie sidebar
     if (loadingSpinner.classList.contains('show')) {
         return;
     }
@@ -356,7 +443,6 @@ function toggleEpisodesList() {
 }
 
 function toggleFullscreen() {
-    // Jeśli trwa ładowanie, nie pozwól na pełny ekran
     if (loadingSpinner.classList.contains('show')) {
         return;
     }
@@ -371,7 +457,6 @@ function toggleFullscreen() {
     showControlsTemporarily();
 }
 
-// Progress functions
 function updateProgress() {
     if (!isSeeking && videoPlayer.duration) {
         const progress = (videoPlayer.currentTime / videoPlayer.duration) * 100;
@@ -390,7 +475,6 @@ function updateBuffer() {
 }
 
 function handleProgressClick(event) {
-    // Jeśli trwa ładowanie, nie pozwól na kliknięcie w progress bar
     if (loadingSpinner.classList.contains('show')) {
         return;
     }
@@ -399,6 +483,16 @@ function handleProgressClick(event) {
     const rect = progressContainer.getBoundingClientRect();
     const percent = (event.clientX - rect.left) / rect.width;
     videoPlayer.currentTime = percent * videoPlayer.duration;
+    showControlsTemporarily();
+}
+
+function startSeeking(event) {
+    if (loadingSpinner.classList.contains('show')) {
+        return;
+    }
+    
+    isSeeking = true;
+    handleProgressDrag(event);
     showControlsTemporarily();
 }
 
@@ -430,9 +524,7 @@ function formatTime(seconds) {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
 }
 
-// UI controls visibility
 function showControlsTemporarily() {
-    // Jeśli trwa ładowanie, nie pokazuj kontrolek
     if (loadingSpinner.classList.contains('show')) {
         return;
     }
@@ -440,7 +532,6 @@ function showControlsTemporarily() {
     controlsOverlay.classList.add('visible');
     clearTimeout(controlsTimeout);
     
-    // Ukryj kontrolki po 2 sekundach jeśli wideo jest odtwarzane
     if (!videoPlayer.paused) {
         controlsTimeout = setTimeout(() => {
             if (!isMouseMoving) {
@@ -458,7 +549,6 @@ function updatePlayState() {
     videoContainer.classList.toggle('paused', !isPlaying);
     document.querySelector('.play-btn').classList.toggle('video-playing', isPlaying);
     
-    // Pokaż kontrolki przy zmianie stanu odtwarzania
     showControlsTemporarily();
 }
 
@@ -472,27 +562,154 @@ function updateEpisodeInfo(episodeNumber) {
         }
     });
     
-    nextEpisodeBtn.disabled = episodeNumber >= hazbinHotelData.episodes.length;
+    const nextEpisodeNumber = episodeNumber + 1;
+    const nextEpisode = hazbinHotelData.episodes.find(ep => ep.number === nextEpisodeNumber);
+    nextEpisodeBtn.disabled = !nextEpisode;
+    
+    if (nextEpisode) {
+        nextEpisodeBtn.innerHTML = `Następny odcinek <svg class="btn-icon" viewBox="0 0 24 24"><path d="M10 17l5-5-5-5v10z"/></svg>`;
+    } else {
+        nextEpisodeBtn.innerHTML = `Koniec serialu <svg class="btn-icon" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>`;
+    }
 }
 
-// Loading functions
 function showLoading() {
     loadingSpinner.classList.add('show');
-    hideCenterButton(); // UKRYJ przycisk środkowy podczas ładowania
+    hideCenterButton();
 }
 
 function hideLoading() {
     loadingSpinner.classList.remove('show');
-    showCenterButton(); // POKAŻ przycisk środkowy po zakończeniu ładowania
+    showCenterButton();
 }
 
-// End screen functions
 function showEndScreen() {
     endScreen.classList.add('show');
 }
 
 function hideEndScreen() {
     endScreen.classList.remove('show');
+}
+
+function showAutoPlayCountdown() {
+    const nextEpisodeNumber = currentEpisode + 1;
+    const nextEpisode = hazbinHotelData.episodes.find(ep => ep.number === nextEpisodeNumber);
+    
+    if (nextEpisode) {
+        hideEndScreen();
+        showCountdownScreen(nextEpisode);
+    } else {
+        showEndScreen();
+    }
+}
+
+function showCountdownScreen(nextEpisode) {
+    const countdownScreen = document.createElement('div');
+    countdownScreen.className = 'countdown-screen show';
+    countdownScreen.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.95);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 60;
+    `;
+    
+    let countdownValue = 10;
+    
+    countdownScreen.innerHTML = `
+        <div class="countdown-content" style="
+            text-align: center;
+            background: rgba(26, 26, 26, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            border: 3px solid #e50914;
+            backdrop-filter: blur(15px);
+            max-width: 500px;
+            width: 90%;
+        ">
+            <div class="countdown-icon" style="font-size: 4rem; margin-bottom: 20px;">⏱️</div>
+            <h3 style="color: white; margin-bottom: 15px; font-size: 1.8rem;">Następny odcinek za:</h3>
+            <div class="countdown-timer" style="
+                font-size: 3rem;
+                color: #e50914;
+                font-weight: bold;
+                margin: 20px 0;
+                font-family: monospace;
+            ">${countdownValue}s</div>
+            <p style="color: #ccc; margin-bottom: 25px; font-size: 1.1rem;">
+                Następny: <strong>${nextEpisode.title}</strong> (Sezon ${nextEpisode.season})
+            </p>
+            <div class="countdown-buttons" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="modern-btn secondary" onclick="cancelAutoPlay()" style="
+                    background: rgba(255, 255, 255, 0.15);
+                    border-color: rgba(255, 255, 255, 0.3);
+                    color: white;
+                    padding: 12px 24px;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    border: 1px solid;
+                    font-size: 0.95rem;
+                ">
+                    Anuluj
+                </button>
+                <button class="modern-btn primary" onclick="playNextEpisodeNow()" style="
+                    background: #e50914;
+                    border-color: #e50914;
+                    color: white;
+                    padding: 12px 24px;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    border: 1px solid;
+                    font-size: 0.95rem;
+                    font-weight: 600;
+                ">
+                    Odtwórz teraz
+                </button>
+            </div>
+        </div>
+    `;
+    
+    videoPlayer.parentElement.appendChild(countdownScreen);
+    
+    const countdownElement = countdownScreen.querySelector('.countdown-timer');
+    countdownInterval = setInterval(() => {
+        countdownValue--;
+        countdownElement.textContent = countdownValue + 's';
+        
+        if (countdownValue <= 0) {
+            clearInterval(countdownInterval);
+            playNextEpisodeNow();
+        }
+    }, 1000);
+    
+    autoPlayCountdown = countdownScreen;
+}
+
+function cancelAutoPlay() {
+    if (countdownInterval) {
+        clearInterval(countdownInterval);
+    }
+    if (autoPlayCountdown) {
+        autoPlayCountdown.remove();
+        autoPlayCountdown = null;
+    }
+    window.location.href = 'index.html';
+}
+
+function playNextEpisodeNow() {
+    if (countdownInterval) {
+        clearInterval(countdownInterval);
+    }
+    if (autoPlayCountdown) {
+        autoPlayCountdown.remove();
+        autoPlayCountdown = null;
+    }
+    playNextEpisode();
 }
 
 function replayEpisode() {
@@ -505,6 +722,8 @@ function playNextEpisode() {
     const nextEpisode = currentEpisode + 1;
     if (nextEpisode <= hazbinHotelData.episodes.length) {
         changeEpisode(nextEpisode);
+    } else {
+        window.location.href = 'index.html';
     }
     hideEndScreen();
 }
@@ -516,9 +735,7 @@ function changeEpisode(episodeNumber) {
     }
 }
 
-// Keyboard controls
 function handleKeyboard(event) {
-    // Jeśli trwa ładowanie, zablokuj klawisze
     if (loadingSpinner.classList.contains('show')) {
         return;
     }

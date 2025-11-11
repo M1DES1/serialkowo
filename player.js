@@ -1,11 +1,12 @@
-// Dane serialu
+// Dane serialu z poprawionymi linkami dla GitHub Pages
 const hazbinHotelData = {
     episodes: [
         {
             number: 1,
             title: "Pilot",
             duration: "32:00",
-            videoUrl: "seriale/hazbinhotel/HAZBIN%20HOTEL%20(PILOT)%20%20Dubbing%20PL%20-%20BruDolina%20Studios%20(1080p,%20h264).mp4"
+            // Użyj bezpośredniego linka do raw.githubusercontent.com
+            videoUrl: "https://raw.githubusercontent.com/M1DES1/serialkowo/main/seriale/hazbinhotel/HAZBIN%20HOTEL%20(PILOT)%20%20Dubbing%20PL%20-%20BruDolina%20Studios%20(1080p,%20h264).mp4"
         }
     ]
 };
@@ -67,6 +68,15 @@ function initEventListeners() {
     videoPlayer.addEventListener('pause', updatePlayState);
     videoPlayer.addEventListener('loadedmetadata', function() {
         totalTimeEl.textContent = formatTime(videoPlayer.duration);
+    });
+    
+    // Error handling
+    videoPlayer.addEventListener('error', function(e) {
+        console.error('Błąd wideo:', e);
+        console.error('Kod błędu:', videoPlayer.error);
+        console.error('URL wideo:', videoPlayer.src);
+        hideLoading();
+        alert('Błąd ładowania wideo. Sprawdź konsolę dla szczegółów.');
     });
     
     // Controls events
@@ -152,6 +162,7 @@ function loadEpisode(episodeNumber) {
     if (episode) {
         showLoading();
         console.log('Ładowanie odcinka:', episodeNumber);
+        console.log('URL wideo:', episode.videoUrl);
         
         // Ustaw źródło wideo
         videoPlayer.src = episode.videoUrl;
@@ -166,6 +177,7 @@ function loadEpisode(episodeNumber) {
         // Spróbuj odtworzyć po załadowaniu
         videoPlayer.addEventListener('canplay', function onCanPlay() {
             videoPlayer.removeEventListener('canplay', onCanPlay);
+            console.log('Wideo gotowe do odtwarzania');
             // Nie autoplay - użytkownik musi kliknąć
         }, { once: true });
         
@@ -208,6 +220,7 @@ function togglePlayPause() {
     if (videoPlayer.paused) {
         videoPlayer.play().catch(error => {
             console.log('Błąd odtwarzania:', error);
+            alert('Nie można odtworzyć wideo. Sprawdź czy plik wideo istnieje.');
         });
     } else {
         videoPlayer.pause();

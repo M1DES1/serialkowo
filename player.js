@@ -1,6 +1,14 @@
-// Dane serialu
+// Dane serialu - ZAKTUALIZOWANE Z ODCINKIEM 0
 const hazbinHotelData = {
     episodes: [
+        // Odcinek pilotażowy
+        {
+            number: 0,
+            title: "Pilot",
+            duration: "32:00",
+            season: 0,
+            videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/HAZBIN%20HOTEL%20(PILOT)%20%20Dubbing%20PL%20-%20BruDolina%20Studios%20(1080p,%20h264).mp4"
+        },
         // Sezon 1
         {
             number: 1,
@@ -109,7 +117,7 @@ const nextEpisodeBtn = document.getElementById('next-episode-btn');
 const speedText = document.getElementById('speed-text');
 
 // Zmienne
-let currentEpisode = 1;
+let currentEpisode = 0;
 let isSeeking = false;
 let isSidebarOpen = false;
 let lastClickTime = 0;
@@ -205,12 +213,14 @@ function showManualDownloadOption() {
         width: 90%;
     `;
     
+    const currentEpisodeData = hazbinHotelData.episodes.find(ep => ep.number === currentEpisode);
+    
     errorMessage.innerHTML = `
         <h3>Problem z odtwarzaniem wideo</h3>
         <p>Wideo nie może być odtworzone bezpośrednio w przeglądarce.</p>
         <p>Możesz:</p>
         <div style="margin: 20px 0;">
-            <a href="${hazbinHotelData.episodes[currentEpisode - 1].videoUrl}" 
+            <a href="${currentEpisodeData.videoUrl}" 
                download 
                style="background: #e50914; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-block; margin: 10px;">
                📥 Pobierz odcinek
@@ -253,14 +263,22 @@ function initEpisodesSidebar() {
     const sidebarContent = document.querySelector('.sidebar-content');
     sidebarContent.innerHTML = '';
     
-    let currentSeason = 0;
+    let currentSeason = -1;
     
     hazbinHotelData.episodes.forEach(episode => {
         if (episode.season !== currentSeason) {
             currentSeason = episode.season;
             const seasonHeader = document.createElement('div');
             seasonHeader.className = 'season-header';
-            seasonHeader.innerHTML = `<h4>Sezon ${currentSeason}</h4>`;
+            
+            let seasonTitle = '';
+            if (episode.season === 0) {
+                seasonTitle = 'Odcinek Pilotażowy';
+            } else {
+                seasonTitle = `Sezon ${episode.season}`;
+            }
+            
+            seasonHeader.innerHTML = `<h4>${seasonTitle}</h4>`;
             seasonHeader.style.cssText = `
                 color: #e50914;
                 font-size: 1.1rem;
@@ -276,12 +294,17 @@ function initEpisodesSidebar() {
         episodeItem.className = `episode-side-item ${episode.number === currentEpisode ? 'active' : ''}`;
         episodeItem.setAttribute('data-episode', episode.number);
         
+        let episodeDisplayNumber = episode.number.toString().padStart(2, '0');
+        if (episode.season === 2) {
+            episodeDisplayNumber = (episode.number - 8).toString().padStart(2, '0');
+        }
+        
         episodeItem.innerHTML = `
             <div class="episode-side-content">
-                <span class="episode-side-num">${episode.number > 8 ? (episode.number - 8).toString().padStart(2, '0') : episode.number.toString().padStart(2, '0')}</span>
+                <span class="episode-side-num">${episodeDisplayNumber}</span>
                 <div class="episode-side-info">
                     <span class="episode-side-title">${episode.title}</span>
-                    <span class="episode-side-duration">Sezon ${episode.season} • ${episode.duration}</span>
+                    <span class="episode-side-duration">${episode.season === 0 ? 'Pilot' : 'Sezon ' + episode.season} • ${episode.duration}</span>
                 </div>
             </div>
             <div class="episode-play-icon">▶</div>
@@ -621,6 +644,13 @@ function showCountdownScreen(nextEpisode) {
     
     let countdownValue = 10;
     
+    let seasonInfo = '';
+    if (nextEpisode.season === 0) {
+        seasonInfo = 'Odcinek Pilotażowy';
+    } else {
+        seasonInfo = `Sezon ${nextEpisode.season}`;
+    }
+    
     countdownScreen.innerHTML = `
         <div class="countdown-content" style="
             text-align: center;
@@ -642,7 +672,7 @@ function showCountdownScreen(nextEpisode) {
                 font-family: monospace;
             ">${countdownValue}s</div>
             <p style="color: #ccc; margin-bottom: 25px; font-size: 1.1rem;">
-                Następny: <strong>${nextEpisode.title}</strong> (Sezon ${nextEpisode.season})
+                Następny: <strong>${nextEpisode.title}</strong> (${seasonInfo})
             </p>
             <div class="countdown-buttons" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
                 <button class="modern-btn secondary" onclick="cancelAutoPlay()" style="

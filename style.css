@@ -1128,3 +1128,28 @@ body {
         right: 15px;
     }
 }
+
+/* Poprawki dla ikon przewijania - TERAZ POPRAWNE */
+.rewind-btn .btn-icon,
+.forward-btn .btn-icon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+/* COFANIE - strzałka w LEWO (bez transformacji) */
+.rewind-btn .btn-icon {
+    /* Ikona domyślnie skierowana w lewo - OK */
+}
+
+/* PRZEWIJANIE - strzałka w PRAWO (bez transformacji) */
+.forward-btn .btn-icon {
+    /* Nowa ikona jest już skierowana w prawo - OK */
+    transform: none !important;
+}
+
+/* Hover effects */
+.rewind-btn:hover .btn-icon,
+.forward-btn:hover .btn-icon {
+    transform: scale(1.1);
+}

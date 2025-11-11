@@ -384,7 +384,10 @@ function showControlsTemporarily() {
 
 function updatePlayState() {
     const isPlaying = !videoPlayer.paused;
-    document.querySelector('.video-container').classList.toggle('video-playing', isPlaying);
+    const videoContainer = document.querySelector('.video-container');
+    
+    videoContainer.classList.toggle('video-playing', isPlaying);
+    videoContainer.classList.toggle('paused', !isPlaying);
     document.querySelector('.play-btn').classList.toggle('video-playing', isPlaying);
     
     // Pokaż kontrolki przy zmianie stanu odtwarzania

@@ -1207,3 +1207,46 @@ body {
         font-size: 2.5rem;
     }
 }
+
+/* Poprawki dla ukrywania przycisku środkowego podczas ładowania */
+.loading-spinner.show ~ .custom-controls-overlay .center-controls {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: opacity 0.3s ease;
+}
+
+/* Domyślny styl dla przycisku środkowego */
+.center-controls {
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.3s ease;
+}
+
+/* Blokada kontrolek podczas ładowania */
+.loading-spinner.show ~ .custom-controls-overlay {
+    pointer-events: none !important;
+}
+
+.loading-spinner.show ~ .custom-controls-overlay .bottom-controls,
+.loading-spinner.show ~ .custom-controls-overlay .progress-container {
+    opacity: 0.3 !important;
+}
+
+/* Przezroczysty przycisk play/pause na środku */
+.big-control-btn {
+    background: rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+}
+
+.big-control-btn:hover {
+    background: rgba(0, 0, 0, 0.7) !important;
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.1);
+}
+
+.big-play-icon, .big-pause-icon {
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}

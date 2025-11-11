@@ -11,140 +11,32 @@
     <div class="episodes-page">
         <header class="page-header">
             <a href="index.html" class="back-btn">← Strona Główna</a>
-            <h1>Hazbin Hotel - Wszystkie Odcinki</h1>
+            <h1>Hazbin Hotel - Odcinki</h1>
         </header>
         
         <div class="series-info">
-            <div class="series-posters">
-                <img src="https://files.catbox.moe/moba5a.png" alt="Hazbin Hotel Sezon 1" class="series-poster">
-                <img src="https://files.catbox.moe/lrt9dt.webp" alt="Hazbin Hotel Sezon 2" class="series-poster">
-            </div>
+            <img src="https://files.catbox.moe/lrt9dt.webp" alt="Hazbin Hotel" class="series-poster">
             <div class="series-details">
                 <h2>Hazbin Hotel</h2>
                 <p class="series-description">
                     Serial animowany opowiadający o księżnicce piekła, Charlie, 
                     która próbuje zrehabilitować grzeszników w swoim hotelu.
-                    Obejmuje zarówno odcinek pilotażowy jak i pełne sezony.
                 </p>
+                <div class="season-selector">
+                    <button class="season-btn active" data-season="1">Sezon 1</button>
+                    <button class="season-btn" data-season="2">Sezon 2</button>
+                </div>
             </div>
         </div>
         
         <div class="episodes-container">
-            <h3>Wszystkie odcinki:</h3>
-            
-            <div class="episode-card" data-episode="0">
-                <div class="episode-number">00</div>
-                <div class="episode-info">
-                    <h3>Pilot</h3>
-                    <p>Odcinek pilotażowy • 32 min</p>
-                </div>
-            </div>
-            
-            <h4 style="margin: 30px 0 15px 0; color: #e50914;">Sezon 1:</h4>
-            <div class="episode-card" data-episode="1">
-                <div class="episode-number">01</div>
-                <div class="episode-info">
-                    <h3>Uwertura</h3>
-                    <p>Sezon 1 • 32 min</p>
-                </div>
-            </div>
-            <div class="episode-card" data-episode="2">
-                <div class="episode-number">02</div>
-                <div class="episode-info">
-                    <h3>Radio zabiło gwiazdę wideo</h3>
-                    <p>Sezon 1 • 28 min</p>
-                </div>
-            </div>
-            <div class="episode-card" data-episode="3">
-                <div class="episode-number">03</div>
-                <div class="episode-info">
-                    <h3>Jajecznica</h3>
-                    <p>Sezon 1 • 26 min</p>
-                </div>
-            </div>
-            <div class="episode-card" data-episode="4">
-                <div class="episode-number">04</div>
-                <div class="episode-info">
-                    <h3>Maskarada</h3>
-                    <p>Sezon 1 • 29 min</p>
-                </div>
-            </div>
-            <div class="episode-card" data-episode="5">
-                <div class="episode-number">05</div>
-                <div class="episode-info">
-                    <h3>Pojedynek o ojcostwo</h3>
-                    <p>Sezon 1 • 31 min</p>
-                </div>
-            </div>
-            <div class="episode-card" data-episode="6">
-                <div class="episode-number">06</div>
-                <div class="episode-info">
-                    <h3>Witamy w niebie</h3>
-                    <p>Sezon 1 • 33 min</p>
-                </div>
-            </div>
-            <div class="episode-card" data-episode="7">
-                <div class="episode-number">07</div>
-                <div class="episode-info">
-                    <h3>Hejka, Rosie!</h3>
-                    <p>Sezon 1 • 27 min</p>
-                </div>
-            </div>
-            <div class="episode-card" data-episode="8">
-                <div class="episode-number">08</div>
-                <div class="episode-info">
-                    <h3>Przedstawienie musi trwać</h3>
-                    <p>Sezon 1 • 35 min</p>
-                </div>
-            </div>
-            
-            <h4 style="margin: 30px 0 15px 0; color: #e50914;">Sezon 2:</h4>
-            <div class="episode-card" data-episode="9">
-                <div class="episode-number">01</div>
-                <div class="episode-info">
-                    <h3>Nowy Pentious</h3>
-                    <p>Sezon 2 • 30 min</p>
-                </div>
-            </div>
-            <div class="episode-card" data-episode="10">
-                <div class="episode-number">02</div>
-                <div class="episode-info">
-                    <h3>Gawędziarz</h3>
-                    <p>Sezon 2 • 28 min</p>
-                </div>
-            </div>
-            <div class="episode-card" data-episode="11">
-                <div class="episode-number">03</div>
-                <div class="episode-info">
-                    <h3>Hazbin Hotel za zamkniętymi drzwiami</h3>
-                    <p>Sezon 2 • 32 min</p>
-                </div>
-            </div>
-            <div class="episode-card" data-episode="12">
-                <div class="episode-number">04</div>
-                <div class="episode-info">
-                    <h3>Umowa stoi</h3>
-                    <p>Sezon 2 • 34 min</p>
-                </div>
+            <h3 id="season-title">Sezon 1 - Odcinki:</h3>
+            <div id="episodes-list">
+                <!-- Odcinki będą dodane dynamicznie przez JavaScript -->
             </div>
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const episodeCards = document.querySelectorAll('.episode-card');
-            
-            episodeCards.forEach(card => {
-                card.addEventListener('click', function() {
-                    const episodeNumber = parseInt(this.getAttribute('data-episode'));
-                    playEpisode(episodeNumber);
-                });
-            });
-        });
-
-        function playEpisode(episodeNumber) {
-            window.location.href = `player.html?episode=${episodeNumber}`;
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

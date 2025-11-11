@@ -17,13 +17,18 @@
         <div class="video-main-container">
             <!-- Lewy panel z wideo -->
             <div class="video-wrapper">
-                <video id="video-player" controls controlsList="nodownload">
-                    <source src="seriale/hazbinhotel/HAZBIN%20HOTEL%20(PILOT)%20%20Dubbing%20PL%20-%20BruDolina%20Studios%20(1080p,%20h264).mp4" type="video/mp4">
+                <video id="video-player" controls controlsList="nodownload" preload="auto">
+                    <source src="https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/HAZBIN%20HOTEL%20(PILOT)%20%20Dubbing%20PL%20-%20BruDolina%20Studios%20(1080p,%20h264).mp4" type="video/mp4">
                     Twoja przeglądarka nie obsługuje odtwarzacza wideo.
                 </video>
                 <div class="video-loading" id="video-loading">
                     <div class="loading-spinner"></div>
                     <p>Ładowanie wideo...</p>
+                </div>
+                
+                <!-- Informacja o ładowaniu -->
+                <div class="video-info" id="video-info">
+                    <p>Wideo ładuje się z GitHub... Może to chwilę potrwać.</p>
                 </div>
             </div>
 

@@ -1153,3 +1153,57 @@ body {
 .forward-btn:hover .btn-icon {
     transform: scale(1.1);
 }
+/* Poprawki dla przezroczystego przycisku play/pause na środku */
+.big-control-btn.transparent {
+    background: rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+}
+
+.big-control-btn.transparent:hover {
+    background: rgba(0, 0, 0, 0.7) !important;
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.1);
+}
+
+/* Ukrywanie przycisku środkowego podczas ładowania */
+.loading-spinner.show ~ .custom-controls-overlay .center-controls {
+    display: none !important;
+}
+
+/* Domyślny styl dla przycisku środkowego */
+.center-controls {
+    display: flex;
+}
+
+/* Poprawki dla ikon w przezroczystym przycisku */
+.big-control-btn.transparent .big-play-icon,
+.big-control-btn.transparent .big-pause-icon {
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+/* Pełny ekran - większy przezroczysty przycisk */
+:fullscreen .big-control-btn.transparent {
+    width: 120px;
+    height: 120px;
+}
+
+:fullscreen .big-control-btn.transparent .big-play-icon,
+:fullscreen .big-control-btn.transparent .big-pause-icon {
+    font-size: 3.5rem;
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+    .big-control-btn.transparent {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .big-control-btn.transparent .big-play-icon,
+    .big-control-btn.transparent .big-pause-icon {
+        font-size: 2.5rem;
+    }
+}

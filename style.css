@@ -1328,3 +1328,139 @@ body {
         width: 100%;
     }
 }
+
+/* Styl dla wielu okładek na stronie głównej */
+.covers-container {
+    margin: 2rem 0;
+}
+
+.cover-row {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.cover-row .cover-container {
+    margin: 0;
+}
+
+/* Styl dla wielu plakatów na stronie odcinków */
+.series-posters {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.series-posters .series-poster {
+    width: 250px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* Styl dla ekranu odliczania */
+.countdown-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 60;
+}
+
+.countdown-screen.show {
+    display: flex;
+}
+
+.countdown-content {
+    text-align: center;
+    background: rgba(26, 26, 26, 0.95);
+    padding: 40px;
+    border-radius: 20px;
+    border: 3px solid #e50914;
+    backdrop-filter: blur(15px);
+    max-width: 500px;
+    width: 90%;
+}
+
+.countdown-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+.countdown-timer {
+    font-size: 3rem;
+    color: #e50914;
+    font-weight: bold;
+    margin: 20px 0;
+    font-family: monospace;
+}
+
+.countdown-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Styl dla nagłówków sezonów w sidebar */
+.season-header {
+    color: #e50914;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 20px 0 10px 0;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #333;
+}
+
+/* Poprawki dla responsywności */
+@media (max-width: 768px) {
+    .cover-row {
+        gap: 2rem;
+        flex-direction: column;
+    }
+    
+    .cover-row .cover-container {
+        max-width: 300px;
+    }
+    
+    .series-posters {
+        justify-content: center;
+    }
+    
+    .series-posters .series-poster {
+        width: 200px;
+    }
+    
+    .countdown-content {
+        padding: 30px 20px;
+    }
+    
+    .countdown-timer {
+        font-size: 2.5rem;
+    }
+    
+    .countdown-buttons {
+        flex-direction: column;
+    }
+    
+    .countdown-buttons button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .cover-row .cover-container {
+        max-width: 250px;
+    }
+    
+    .series-posters .series-poster {
+        width: 150px;
+    }
+}

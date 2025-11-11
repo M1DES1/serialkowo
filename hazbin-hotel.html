@@ -117,7 +117,6 @@
     </div>
 
     <script>
-        // Inicjalizacja nasłuchiwaczy dla kart odcinków
         document.addEventListener('DOMContentLoaded', function() {
             const episodeCards = document.querySelectorAll('.episode-card');
             
@@ -130,7 +129,6 @@
         });
 
         function playEpisode(episodeNumber) {
-            console.log('Próba odtworzenia odcinka:', episodeNumber);
             window.location.href = `player.html?episode=${episodeNumber}`;
         }
     </script>

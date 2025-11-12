@@ -1021,3 +1021,45 @@ body {
         text-align: center;
     }
 }
+/* Style dla oznaczeń językowych */
+.language-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-left: 5px;
+}
+
+.language-badge.dubbing {
+    background: linear-gradient(45deg, #e50914, #ff6b6b);
+    color: white;
+}
+
+.language-badge.lector {
+    background: linear-gradient(45deg, #2196F3, #21CBF3);
+    color: white;
+}
+
+.language-badge.subtitles {
+    background: linear-gradient(45deg, #4CAF50, #8BC34A);
+    color: white;
+}
+
+/* Poprawki dla karty odcinka z oznaczeniem językowym */
+.episode-info p {
+    color: #ccc;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+/* Style dla oznaczenia językowego w sidebarze */
+.episode-side-info .language-badge {
+    font-size: 0.6rem;
+    padding: 1px 6px;
+    margin-top: 2px;
+}

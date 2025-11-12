@@ -7,63 +7,72 @@ const hazbinHotelData = {
                 title: "Pilot",
                 description: "Odcinek pilotażowy",
                 duration: "32:00",
-                videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/HAZBIN%20HOTEL%20(PILOT)%20%20Dubbing%20PL%20-%20BruDolina%20Studios%20(1080p,%20h264).mp4"
+                videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/HAZBIN%20HOTEL%20(PILOT)%20%20Dubbing%20PL%20-%20BruDolina%20Studios%20(1080p,%20h264).mp4",
+                language: "Dubbing PL"
             },
             {
                 number: 1,
                 title: "Uwertura",
                 description: "Odcinek 1",
                 duration: "24:00",
-                videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc1%20Uwertura.mp4"
+                videoUrl: "https://box-1192-e.vmwesa.online/hls/,xqx2onijybokjiqbtehs5lywurs7vpdsulxqknsludjyzzjm7q7536jhcuca,.urlset/master.m3u8",
+                language: "Lektor PL"
             },
             {
                 number: 2,
                 title: "Radio zabiło gwiazdę",
                 description: "Odcinek 2",
                 duration: "22:00",
-                videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc%202%20Radio%20zabi%C5%82o%20gwiazd%C4%99%20wideo.mp4"
+                videoUrl: "https://fs50.bigwarp.io/v/02/00483/6f85lhv3z1wu_x/x.mp4?t=5lD-05Ug5xlYFAQjTTRiEqgrhN9VsCPPYKD6k5I-634&s=1762965365&e=43200&f=2417121&sp=1000&i=0.0&kmnr=689547918047",
+                language: "Lektor PL"
             },
             {
                 number: 3,
                 title: "Jajecznica",
                 description: "Odcinek 3",
                 duration: "25:00",
-                videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc%203Jajecznica.mp4"
+                videoUrl: "https://box-1245-w.vmwesa.online/hls/,xqx2pgajybokjiqbtehs5k2dwb2kywujxno7rbkd5t4yrt4rkl7mz2sxmp7q,.urlset/master.m3u8",
+                language: "Lektor PL"
             },
             {
                 number: 4,
                 title: "Maskarada",
                 description: "Odcinek 4",
                 duration: "23:00",
-                videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc%204Maskarada.mp4"
+                videoUrl: "https://fs51.bigwarp.io/v/01/00483/5xne159tmk1d_x/x.mp4?t=azDRmn5rO4HGD-YwJe93d4tOiTEfib8-4Mo1b6who3o&s=1762965505&e=43200&f=2417243&sp=1000&i=0.0&kmnr=435052582522",
+                language: "Lektor PL"
             },
             {
                 number: 5,
                 title: "Pojedynek o ojcostwo",
                 description: "Odcinek 5",
                 duration: "26:00",
-                videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc5%20Pojedynek%20o%20ojcostwo.m3u8"
+                videoUrl: "https://box-1163-t.vmwesa.online/hls/,xqx2pyyjybokjiqbtehs5kqrx3uzxpjntor2xbnkndxgisqdpgn7hrioavaa,.urlset/master.m3u8",
+                language: "Lektor PL"
             },
             {
                 number: 6,
                 title: "Witamy w niebie",
                 description: "Odcinek 6",
                 duration: "24:00",
-                videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc6%20Witamy%20w%20niebie.mp4"
+                videoUrl: "https://box-1183-rp.vmwesa.online/hls/,xqx2pxczybokjiqbtees5maoxtla56xqch65lig2hiktztsw7k4jt6mzwnda,.urlset/master.m3u8",
+                language: "Lektor PL"
             },
             {
                 number: 7,
                 title: "Hejka, Rosie!",
                 description: "Odcinek 7",
                 duration: "25:00",
-                videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc7%20Hejka,%20Rosie!.m3u8"
+                videoUrl: "https://box-1181-pd.vmwesa.online/hls/,xqx2olqkybokjiqbtehs5pybxt4n5syawmvvyx4un57mapwyfasl2mcqnwza,.urlset/master.m3u8",
+                language: "Lektor PL"
             },
             {
                 number: 8,
                 title: "Przedstawienie musi trwać",
                 description: "Odcinek 8",
                 duration: "27:00",
-                videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc%208%20Przedstawienie%20musi%20trwa%C4%87.m3u8"
+                videoUrl: "https://fs69.bigwarp.io/v/01/02250/y4xep40vzit1_x/x.mp4?t=sYm5CeAcUn19DNlH0TUFy_r-rVWCRl5jQG8lf9goyQo&s=1762967723&e=43200&f=11252472&sp=1000&i=0.0&kmnr=513936365447",
+                language: "Napisy PL"
             }
         ],
         2: [
@@ -72,28 +81,48 @@ const hazbinHotelData = {
                 title: "Nowy Pentious",
                 description: "Odcinek 1",
                 duration: "24:00",
-                videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc9%20Nowy%20Pentious.m3u8"
+                videoUrl: "https://box-1183-rp.vmwesa.online/hls/,xqx2pikzybokjiqbtees56a44phsyhd36kz4ofnia4daenlqilksd62dmxxq,.urlset/master.m3u8",
+                language: "Lektor PL"
             },
             {
                 number: 2,
                 title: "Gawędziarz",
                 description: "Odcinek 2",
                 duration: "23:00",
-                videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc%2010%20Gaw%C4%99dziarz.m3u8"
+                videoUrl: "https://box-1246-e.vmwesa.online/hls/,xqx2pjszybokjiqbtees5ja3xyih73wqebmen3p4xdsrjmxbdjrspanqrlqa,.urlset/master.m3u8",
+                language: "Lektor PL"
             },
             {
                 number: 3,
                 title: "Hazbin Hotel za zamkniętymi drzwiami",
                 description: "Odcinek 3",
                 duration: "25:00",
-                videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc%2011%20Hazbin%20Hotel%20za%20zamkni%C4%99tymi%20drzwiami.m3u8"
+                videoUrl: "https://str39.vidoza.net/vod/v2/nvl4cbeejifeieno3widxh5mn2se7ka5sj2plj6pugmjpczauwbrb24uoeypu2hey4/v.mp4",
+                language: "Lektor PL"
             },
             {
                 number: 4,
                 title: "Umowa stoi",
                 description: "Odcinek 4",
                 duration: "26:00",
-                videoUrl: "https://github.com/M1DES1/serialkowo/raw/refs/heads/main/seriale/hazbinhotel/odc%2012%20Umowa%20stoi.m3u8"
+                videoUrl: "https://box-1396-t10.vmeas.cloud/hls/,xqx2oljmyjokjiqbtevs5o2nuiocr6wygrdmplwah5axac5h27vbdngwclkq,.urlset/master.m3u8",
+                language: "Lektor PL"
+            },
+            {
+                number: 5,
+                title: "Uciszeni",
+                description: "Odcinek 5",
+                duration: "24:00",
+                videoUrl: "https://vef-doc-2ccd.transitto.online/hls/,xqx2objm7vokjiqbte2c5lce4c2gleeaebxl4utw4lbxlaitpp36xwjp4iaa,.urlset/master.m3u8",
+                language: "Lektor PL"
+            },
+            {
+                number: 6,
+                title: "Wrzeszcz",
+                description: "Odcinek 6",
+                duration: "25:00",
+                videoUrl: "https://fs37.bigwarp.io/v/01/02295/bwebgls0ul1r_x/x.mp4?t=lY2LNbq664PQOWnpYuKJur8aHwO_p-TBGrjfENsMUL8&s=1762966881&e=43200&f=11477415&sp=1000&i=0.0&kmnr=373982843175",
+                language: "Lektor PL"
             }
         ]
     }
@@ -149,6 +178,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initVolumeControl();
     initEpisodesSidebar();
 });
+
+
 
 function initEventListeners() {
     // Video events
